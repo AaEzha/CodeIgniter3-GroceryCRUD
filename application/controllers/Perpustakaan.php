@@ -90,4 +90,23 @@ class Perpustakaan extends CI_Controller
 
 	  return $post_array;
 	}
+
+	public function provinsi()
+	{
+		$crud = new grocery_CRUD();
+		$crud->set_table('provinsi');
+
+		$crud->set_subject('Provinsi', 'Daftar Provinsi');
+		$crud->set_theme('datatables');
+		$crud->callback_column('provinsi',array($this,'_callback_webpage_provinsi'));
+
+		$output = $crud->render();
+
+		$this->_example_output($output);
+	}
+
+	public function _callback_webpage_provinsi($value, $row)
+{
+  return "<a href='".site_url('perpustakaan/kabupaten/'.$row->id)."'>$value</a>";
+}
 }
