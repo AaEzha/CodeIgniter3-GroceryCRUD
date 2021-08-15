@@ -58,25 +58,26 @@ class Perpustakaan extends CI_Controller
 		$crud->field_type('password', 'password');
 		$crud->display_as('role_id', 'Role');
 		$crud->callback_before_insert(array($this, 'encrypt_password_callback'));
-		$crud->unset_columns(['password']);
+		$crud->unset_columns(['password', 'created_at', 'updated_at']);
 		// $crud->unset_edit_fields(['password']);
 		$crud->callback_edit_field('password', function ($value, $primary_key) {
-            return '<input type="text" maxlength="50" value="" name="password">';
+            return '<input type="password" maxlength="50" value="" name="password">';
         });
-		$crud->callback_before_update(array($this, 'encrypt_password_callback'));
+		$crud->callback_before_update(array($this, 'update_password_callback'));
+		$crud->unset_fields(['created_at', 'updated_at']);
 
 		$output = $crud->render();
 
 		$this->_example_output($output);
 	}
 
-	// function encrypt_password_callback($post_array)
-	// {
-	// 	$post_array['password'] = md5($post_array['password']);
-	// 	return $post_array;
-	// }
+	function encrypt_password_callback($post_array)
+	{
+		$post_array['password'] = md5($post_array['password']);
+		return $post_array;
+	}
 
-	function encrypt_password_callback($post_array, $primary_key) {
+	function update_password_callback($post_array, $primary_key) {
 		//Encrypt password only if is not empty. Else don't change the password to an empty field
 		if(!empty($post_array['password']))
 		{
@@ -86,7 +87,7 @@ class Perpustakaan extends CI_Controller
 		{
 			unset($post_array['password']);
 		}
-	 
+
 	  return $post_array;
 	}
 }
