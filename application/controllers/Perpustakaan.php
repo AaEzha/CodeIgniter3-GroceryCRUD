@@ -30,4 +30,32 @@ class Perpustakaan extends CI_Controller {
         $this->_example_output($output);
 
     }
+
+	public function role() {
+        $crud = new grocery_CRUD();
+        $crud->set_table('role');
+
+		$crud->set_subject('Role', 'Daftar Role');
+		$crud->set_theme('datatables');
+     
+        $output = $crud->render();
+ 
+        $this->_example_output($output);
+
+    }
+
+	public function user() {
+        $crud = new grocery_CRUD();
+        $crud->set_table('user');
+
+		$crud->set_subject('User', 'Daftar User');
+		$crud->set_theme('datatables');
+		$crud->set_relation('role_id','role','role');
+		$crud->display_as('role_id','Role');
+     
+        $output = $crud->render();
+ 
+        $this->_example_output($output);
+
+    }
 }
