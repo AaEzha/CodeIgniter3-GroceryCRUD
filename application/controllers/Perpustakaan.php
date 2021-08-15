@@ -20,6 +20,10 @@ class Perpustakaan extends CI_Controller {
     public function buku() {
         $crud = new grocery_CRUD();
         $crud->set_table('buku');
+
+		$crud->set_field_upload('cover','assets/uploads/files');
+		$crud->set_subject('Buku', 'Daftar Buku');
+		$crud->set_theme('datatables');
      
         $output = $crud->render();
  
