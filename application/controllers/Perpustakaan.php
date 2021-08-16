@@ -132,4 +132,28 @@ class Perpustakaan extends CI_Controller
 
 		$this->_example_output($output);
 	}
+
+	public function kecamatan($kabupaten_id)
+	{
+		$crud = new grocery_CRUD();
+		$crud->set_table('kecamatan');
+
+		$crud->set_subject('Kecamatan', 'Daftar Kecamatan');
+		$crud->set_theme('datatables');
+		$crud->callback_column('kecamatan', function($value, $row){
+			return "<a href='" . site_url('perpustakaan/kelurahan/' . $row->id) . "'>$value</a>";
+		});
+		$crud->where('kabupaten_id', $kabupaten_id);
+		$crud->display_as('kabupaten_id', 'Kabupaten');
+		$crud->fields('kecamatan', 'kabupaten_id');
+		$crud->field_type('kabupaten_id', 'hidden', $kabupaten_id);
+		$crud->callback_column('kabupaten_id', function ($value, $row) {
+			$res = $this->db->get_where('kabupaten', ['id' => $value])->row();
+			return $res->kabupaten;
+		});
+
+		$output = $crud->render();
+
+		$this->_example_output($output);
+	}
 }
